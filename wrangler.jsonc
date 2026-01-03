@@ -1,0 +1,34 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "app",
+  "main": "./src/index.ts",
+  "compatibility_date": "2025-12-17",
+  "compatibility_flags": ["nodejs_compat"],
+  "upload_source_maps": true,
+  "placement": { "mode": "smart" },
+  "observability": { "enabled": true },
+  "vars": {
+    "MESSAGE": "The best insentive is no incentive.",
+    "API_URL": "https://app.589.workers.dev"
+  },
+  // "routes": [
+  //   {
+  //     "pattern": "pjq.jp",
+  //     "custom_domain": true
+  //   }
+  // ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "WEBSOCKETSERVER",
+        "class_name": "WebSocketServer"
+      },
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["WebSocketServer"]
+    }
+  ]
+}

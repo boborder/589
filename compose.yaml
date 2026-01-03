@@ -1,0 +1,32 @@
+name: "589"
+services:
+  app:
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+      - "4983:4983"
+    # command: ["run", "db:studio"]
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  db:
+    image: "postgres:17"
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env.local
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./drizzle/migrations:/docker-entrypoint-initdb.d
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel --url http://app:3000
+    # command: tunnel --url http://app:4983
+    restart: unless-stopped
+
+volumes:
+  pg_data:

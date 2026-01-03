@@ -1,0 +1,13 @@
+[plugins]
+node = "24"
+bun = "latest"
+
+[tasks]
+build = "docker compose build"
+start = "docker compose up"
+deploy = "docker compose up -d"
+down = "docker compose down"
+logs = "docker compose logs -f"
+restart = "docker compose restart"
+shell = "docker compose exec app /bin/sh"
+url = "docker compose logs tunnel | grep -o 'https://[^ ]*.trycloudflare.com'"
