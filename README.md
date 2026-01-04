@@ -1,4 +1,4 @@
-# hono proxy + AI
+# hono + durable objects + partykit
 
 ```sh
 bun i

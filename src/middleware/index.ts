@@ -12,7 +12,7 @@ import { cookie, headers } from './headers';
 
 const middleware = new Hono<Env>()
   // PartyServer ミドルウェアを適用 /parties/:id?/:room? で良い
-  .use('*', partyserverMiddleware())
+  .use('/parties/:id?/:room?', partyserverMiddleware())
   .use(
     secureHeaders(),
     logger(),

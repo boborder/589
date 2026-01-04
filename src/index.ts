@@ -1,6 +1,8 @@
+import { createHandler } from '@rivetkit/cloudflare-workers';
 import { Hono } from 'hono';
 import { showRoutes } from 'hono/dev';
 import middleware from './middleware';
+import { registry } from './registry';
 import { renderer } from './renderer';
 import routes from './routes';
 import { root } from './routes/root';
@@ -23,8 +25,13 @@ if (import.meta.env.DEV) {
 // RPC クライアント用の型エクスポート
 export type AppType = typeof app;
 
-export default {
-  fetch: app.fetch,
-} satisfies ExportedHandler<Cloudflare.Env>;
+// export default {
+//   fetch: app.fetch,
+// } satisfies ExportedHandler<Cloudflare.Env>;
 
-export { WebSocketServer } from './do';
+export { WebSocketServer } from './party';
+
+const { handler, ActorHandler } = createHandler(registry, { fetch: app.fetch });
+
+export default handler;
+export { ActorHandler };

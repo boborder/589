@@ -1,4 +1,5 @@
 import { Challenge } from '../components/features/Challenge';
+import { Count } from '../components/features/Count';
 import { GetXRP } from '../components/features/GetXRP';
 import { Globe } from '../components/features/Globe';
 import {
@@ -12,6 +13,7 @@ export function App() {
     <>
       <GetXRP />
       <Globe />
+      <Count />
       <Challenge />
       <Ticker />
       <CryptoHeatmap />

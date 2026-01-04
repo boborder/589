@@ -11,24 +11,30 @@
     "MESSAGE": "The best insentive is no incentive.",
     "API_URL": "https://app.589.workers.dev"
   },
-  // "routes": [
-  //   {
-  //     "pattern": "pjq.jp",
-  //     "custom_domain": true
-  //   }
-  // ],
   "durable_objects": {
     "bindings": [
       {
         "name": "WEBSOCKETSERVER",
         "class_name": "WebSocketServer"
       },
+      {
+        // この名前は Rivetkit で使用される
+        "name": "ACTOR_DO",
+        "class_name": "ActorHandler"
+      }
     ]
   },
   "migrations": [
     {
       "tag": "v1",
-      "new_sqlite_classes": ["WebSocketServer"]
+      "new_sqlite_classes": ["WebSocketServer", "ActorHandler"]
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "ACTOR_KV",
+      "id": "847c529785b545d79c8224615c47b522",
+      "remote": true
     }
   ]
 }

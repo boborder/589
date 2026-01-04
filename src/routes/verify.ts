@@ -17,6 +17,7 @@ export const verify = app.post('/', async (c) => {
     },
   );
   const data = (await response.json()) as { success: boolean };
+  console.log(data);
   if (!data.success) {
     return c.json({ success: false, error: 'Invalid token' }, 400);
   }

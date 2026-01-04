@@ -12,8 +12,8 @@ import 'dotenv/config';
 
 const { DATABASE_URL, BETTER_AUTH_URL, BETTER_AUTH_SECRET } = process.env;
 
-const sql = neon(DATABASE_URL!);
-const db = drizzle(sql);
+const client = neon(DATABASE_URL!);
+const db = drizzle({ client, schema });
 
 export const auth: ReturnType<typeof betterAuth> = betterAuth({
   database: drizzleAdapter(db, {
