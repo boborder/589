@@ -119,7 +119,10 @@ const location = actor({
       Region: request.cf?.region as string,
     };
     c.state.count++;
-    return new Response(JSON.stringify({ location: c.state.location, count: c.state.count }), {
+    return new Response(JSON.stringify({
+      location: c.state.location,
+      count: c.state.count
+    }), {
       headers: { "Content-Type": "application/json" },
     });
   },
