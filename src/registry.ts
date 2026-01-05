@@ -63,7 +63,7 @@ export const getInfo = actor({
         }),
       }).then((res) => res.json())) as BookOffersResponse;
       c.state.price = res;
-      c.broadcast('newPrice', c.state.price);
+      // c.broadcast('newPrice', c.state.price);
       c.schedule.after(30000, 'getPrice', url);
       return c.state.price;
     },
@@ -77,7 +77,7 @@ export const getInfo = actor({
       }).then((res) => res.json())) as ServerInfoResponse;
       c.state.serverInfo = res;
       // ブロードキャストの意味ない？
-      c.broadcast('newTime', c.state.serverInfo);
+      // c.broadcast('newTime', c.state.serverInfo);
       c.schedule.after(60000, 'getTime', url);
       return c.state.serverInfo;
     },
@@ -91,7 +91,7 @@ export const getInfo = actor({
       }).then((res) => res.json())) as FeeResponse;
       c.state.fee = res;
       // ブロードキャストの意味ない？
-      c.broadcast('newLedgerIndex', c.state.fee);
+      // c.broadcast('newLedgerIndex', c.state.fee);
       c.schedule.after(3333, 'getLedgerIndex', url);
       return c.state.fee;
     },
