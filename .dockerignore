@@ -9,6 +9,8 @@ Makefile
 
 .git
 .gitignore
+.jjj
+.idea
 .vscode
 README.md
 AGENTS.md
