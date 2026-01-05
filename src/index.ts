@@ -7,7 +7,6 @@ import { renderer } from './renderer';
 import routes from './routes';
 import { root } from './routes/root';
 
-// PartyServer ミドルウェアを最初に適用（WebSocket リクエストを他のミドルウェアより先に処理）
 const app = new Hono<Env>()
   //ミドルウェアを適用
   .route('/', middleware)
@@ -25,13 +24,16 @@ if (import.meta.env.DEV) {
 // RPC クライアント用の型エクスポート
 export type AppType = typeof app;
 
-// export default {
-//   fetch: app.fetch,
-// } satisfies ExportedHandler<Cloudflare.Env>;
-
+// PartyServer のエクスポート
 export { WebSocketServer } from './party';
 
-const { handler, ActorHandler } = createHandler(registry, { fetch: app.fetch });
-
+// ここで RivetKit のハンドラーを作成 hono をラップ
+// /rivet エンドポイント が作成される
+const { handler, ActorHandler } = createHandler(
+  registry,
+  { fetch: app.fetch }
+);
+// RivetKit のハンドラーをエクスポート
 export default handler;
+// RivetKit のDurable Object クラスをエクスポート
 export { ActorHandler };

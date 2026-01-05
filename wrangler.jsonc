@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "app",
   "main": "./src/index.ts",
-  "compatibility_date": "2025-12-17",
+  "compatibility_date": "2025-12-21",
   "compatibility_flags": ["nodejs_compat"],
   "upload_source_maps": true,
   "placement": { "mode": "smart" },
@@ -32,6 +32,7 @@
   ],
   "kv_namespaces": [
     {
+      // この名前は Rivetkit で使用される
       "binding": "ACTOR_KV",
       "id": "847c529785b545d79c8224615c47b522",
       "remote": true
