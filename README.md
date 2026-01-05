@@ -27,10 +27,11 @@
    ```
 
 2. 環境変数の設定
-   .env.example を参考に .env を作成してください。
 
    ```:sh
+   # .env.example を参考に .env を作成
    cp .env.example .env
+   $EDITOR .env
    ```
 
 3. 型定義の生成
@@ -54,15 +55,16 @@
    bun run dev
    ```
 
-6. デプロイ
-   [Cloudflare 無料アカウント必須](https://dash.cloudflare.com)
-   Cloudflare Workers へのデプロイは以下のコマンドで行います。
+## デプロイ
 
-   ```:sh
-   bun run deploy
+[Cloudflare 無料アカウント必須](https://dash.cloudflare.com)
+Cloudflare Workers へのデプロイは以下のコマンドで行います。
 
-   bun run cf:secret
-   ```
+```:sh
+bun run deploy
+# 環境変数もデプロイ
+bun run cf:secret
+```
 
 ## 参考文献
 

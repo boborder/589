@@ -109,8 +109,10 @@ const location = actor({
   options: {
     canHibernateWebSocket: true,
   },
+  // driver から cf へアクセスできる
   createVars: (_ctx: InitContext, driver: DriverContext) => ({ driver }),
   state: { location: { lat: 0, lng: 0, Region: "" }, count: 0 },
+  // request から cf へアクセスできる
   onRequest: (c, request) => {
     console.log(request.cf?.latitude, request.cf?.longitude, request.cf?.region);
     c.state.location = {
@@ -131,7 +133,12 @@ const location = actor({
     c.state.location = { lat: 0, lng: 0, Region: "" };
     c.state.count--;
   },
-  actions: {},
+  actions: {
+    getLocation: (c) => {
+      console.log(c.vars.driver.state.id);
+      return c.state.location;
+    },
+  },
 });
 
 export const registry = setup({
