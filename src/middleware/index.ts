@@ -12,22 +12,22 @@ import { cookie, headers } from './headers';
 
 const middleware = new Hono<Env>()
   // PartyServer ミドルウェアを最初に適用（WebSocket リクエストを他のミドルウェアより先に処理）
-  .use("/parties/:id?/:room?", partyserverMiddleware())
+  .use('/parties/:id?/:room?', partyserverMiddleware())
   .use(
     secureHeaders(),
     logger(),
     timing(),
     requestId(),
     prettyJSON(),
-    poweredBy({ serverName: "589" }),
+    poweredBy({ serverName: '589' }),
     languageDetector({
-      supportedLanguages: ["ja", "en"],
-      fallbackLanguage: "ja",
+      supportedLanguages: ['ja', 'en'],
+      fallbackLanguage: 'ja',
     }),
     context,
     cookie,
     headers,
-    connInfo
+    connInfo,
   );
 
 export default middleware;

@@ -12,7 +12,7 @@ const app = new Hono<Env>();
 const handler = app
   .route('/', root)
   .route('/api/cred', cred)
-  .route('/api/verify', verify)
+  .route('/api/verify', verify);
 
 const routes = handler
   .get('/openapi.json', openAPIRouteHandler(handler, docs))

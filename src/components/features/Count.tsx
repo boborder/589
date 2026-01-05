@@ -8,17 +8,18 @@ const countAtom = atom<number | undefined>(undefined);
 
 // RivetKit のエンドポイント 本番環境 or 開発環境
 const endpoint = import.meta.env.PROD
-? "https://app.589.workers.dev/rivet"
-: 'http://localhost:3000/rivet';
+  ? 'https://app.589.workers.dev/rivet'
+  : 'http://localhost:3000/rivet';
 
 // RivetKit のクライアント
 const clientAtom = atom(createClient<typeof registry>(endpoint));
 
 // 現在の count を取得するクエリ 初期値に使う
 const countQuery = atomWithQuery((get) => ({
-  queryKey: ["count", get(clientAtom)],
+  queryKey: ['count', get(clientAtom)],
   queryFn: async () => {
-    const client = get(clientAtom).counter.getOrCreate("getCount");
+    // /rivet/counter/getCount へリクエスト
+    const client = get(clientAtom).counter.getOrCreate('getCount');
     return client.getCount();
   },
   enabled: !!get(clientAtom).counter,
@@ -34,11 +35,11 @@ export const Count = () => {
   const [count, setCount] = useAtom(countAtom);
 
   const socket = useActor({
-    name: "counter",
-    key: ["getCount"],
+    name: 'counter',
+    key: ['getCount'],
   });
 
-  socket.useEvent("newCount", (count: number) => {
+  socket.useEvent('newCount', (count: number) => {
     setCount(count);
   });
 

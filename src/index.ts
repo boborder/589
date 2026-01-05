@@ -29,10 +29,7 @@ export { WebSocketServer } from './party';
 
 // ここで RivetKit のハンドラーを作成 hono をラップ
 // /rivet エンドポイント が作成される
-const { handler, ActorHandler } = createHandler(
-  registry,
-  { fetch: app.fetch }
-);
+const { handler, ActorHandler } = createHandler(registry, { fetch: app.fetch });
 // RivetKit のハンドラーをエクスポート
 export default handler;
 // RivetKit のDurable Object クラスをエクスポート

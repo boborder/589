@@ -33,19 +33,19 @@ export class WebSocketServer extends Server {
       try {
         conn.send(
           JSON.stringify({
-            type: "add-marker",
+            type: 'add-marker',
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             position: connection.state?.position,
-          })
+          }),
         );
 
         // And let's send the new connection's position to all other connections
         if (connection.id !== conn.id) {
           connection.send(
             JSON.stringify({
-              type: "add-marker",
+              type: 'add-marker',
               position,
-            })
+            }),
           );
         }
       } catch {
@@ -59,10 +59,10 @@ export class WebSocketServer extends Server {
   onCloseOrError(connection: Connection) {
     this.broadcast(
       JSON.stringify({
-        type: "remove-marker",
+        type: 'remove-marker',
         id: connection.id,
       } satisfies OutgoingMessage),
-      [connection.id]
+      [connection.id],
     );
   }
 
