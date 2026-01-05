@@ -17,7 +17,7 @@ const db = drizzle({ client, schema });
 
 export const auth: ReturnType<typeof betterAuth> = betterAuth({
   database: drizzleAdapter(db, {
-    provider: 'pg',
+    provider: "pg",
     schema: {
       user: schema.user,
       session: schema.session,
@@ -25,8 +25,12 @@ export const auth: ReturnType<typeof betterAuth> = betterAuth({
       verification: schema.verification,
     },
   }),
+  emailAndPassword: {
+    enabled: true,
+  },
   baseURL: BETTER_AUTH_URL,
   secret: BETTER_AUTH_SECRET,
-  basePath: '/api/auth',
-  appName: '589',
+  basePath: "/api/auth",
+  appName: "589",
+  experimental: { joins: true },
 });

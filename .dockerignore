@@ -9,7 +9,7 @@ Makefile
 
 .git
 .gitignore
-.jjj
+.jj
 .idea
 .vscode
 README.md

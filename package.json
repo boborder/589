@@ -1,5 +1,5 @@
 {
-  "name": "app",
+  "name": "589",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -8,12 +8,13 @@
     "deploy": "vite build && wrangler deploy",
     "lint": "biome check --write",
     "format": "biome format --write",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv",
-    "cf-secret": "wrangler secret bulk .env",
+    "cf:typegen": "wrangler types --env-interface CloudflareEnv",
+    "cf:secret": "wrangler secret bulk .env",
     "db:generate": "drizzle-kit generate --name init_db",
     "db:migrate": "drizzle-kit migrate",
     "db:seed": "tsx ./src/drizzle/module/seed.ts",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "auth:init": "bunx @better-auth/cli generate"
   },
   "dependencies": {
     "@hono/standard-validator": "^0.2.1",
