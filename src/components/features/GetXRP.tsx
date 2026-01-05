@@ -1,66 +1,58 @@
-// import { useAtom } from 'jotai';
-// import { feeQuery, priceQuery, serverQuery } from '../../module/query';
-
-import { createRivetKit } from '@rivetkit/react';
-import { useEffect, useState } from 'hono/jsx/dom';
+import { createClient } from '@rivetkit/react';
+import { atom, useAtom } from 'jotai';
+import { atomWithQuery } from 'jotai-tanstack-query';
 import type { registry } from '../../registry';
 
 const endpoint = import.meta.env.PROD
   ? "https://app.589.workers.dev/rivet"
   : 'http://localhost:3000/rivet';
 
-const { useActor } = createRivetKit<typeof registry>({
-  endpoint,
-});
+const clientAtom = atom(createClient<typeof registry>(endpoint));
+
+const url = "https://xrpl.ws";
+
+const getInfoQuery = atomWithQuery((get) => ({
+  queryKey: ["getInfo", get(clientAtom)],
+  queryFn: async () => {
+    const client = get(clientAtom).getInfo.getOrCreate("my-schedule");
+    await client.getLedgerIndex(url);
+    await client.getPrice(url);
+    await client.getTime(url);
+    return url;
+  },
+}));
+
+const currentQuery = atomWithQuery((get) => ({
+  queryKey: ["current", get(clientAtom)],
+  queryFn: async () => {
+    const client = get(clientAtom).getInfo.getOrCreate("my-schedule");
+    return client.getCurrent();
+  },
+  refetchInterval: 3000,
+}));
 
 export const GetXRP = () => {
-  // const [{ data: server }] = useAtom(serverQuery);
-  // const [{ data: fee }] = useAtom(feeQuery);
-  // const [{ data: price }] = useAtom(priceQuery);
-  const [ price, setPrice ] = useState(0);
-  const [ server, setTime ] = useState(0);
-  const [ fee, setFee ] = useState(0);
-
-  const socket = useActor({
-    name: "getInfo",
-    key: ["my-schedule"]
-  });
-
-  socket.useEvent("newPrice", async (message) => {
-    setPrice(await message.price);
-  });
-  socket.useEvent("newTime", async (message) => {
-    setTime(await message.time);
-  });
-  socket.useEvent("newLedgerIndex", async (message) => {
-    setFee(await message.fee);
-  });
-
-  useEffect(() => {
-    socket.connection?.setReminder().then((res) => {
-      console.log(res);
-    });
-  }, []);
+  const [{ data: getInfo }] = useAtom(getInfoQuery);
+  const [{ data: current }] = useAtom(currentQuery);
 
   return (
     <div className="stats stats-vertical md:stats-horizontal">
       <div className="stat">
         <div className="stat-title">Time</div>
         <div className="stat-value text-xs  font-mono">
-          {/* {server?.result.info.time} */}
-          {server}
+          {current?.time}
         </div>
+        <div className="stat-desc">{getInfo}</div>
       </div>
       <div className="stat">
         <div className="stat-title">Ledger Index</div>
         <div className="stat-value font-mono">
-          {/* {fee?.result.ledger_current_index} */}
-          {fee}
+          {current?.ledgerIndex}
         </div>
       </div>
       <div className="stat">
         <div className="stat-title">XRP/RLUSD</div>
-        <div className="stat-value font-mono">${price?.toFixed(4)}</div>
+        <div className="stat-value font-mono">${current?.price?.toFixed(4)}</div>
       </div>
     </div>
   );

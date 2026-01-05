@@ -13,11 +13,6 @@ const handler = app
   .route('/', root)
   .route('/api/cred', cred)
   .route('/api/verify', verify)
-  .get('/api/:rivet', async (c) => {
-    // const { rivet } = c.req.param();
-    const socket = c.env.RIVET.getOrCreate("counter");
-    return c.json({ count: socket.getCount() });
-  });
 
 const routes = handler
   .get('/openapi.json', openAPIRouteHandler(handler, docs))

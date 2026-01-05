@@ -51,7 +51,7 @@
     "@cloudflare/vitest-pool-workers": "^0.11.1",
     "@hono/cli": "^0.1.6",
     "@tailwindcss/vite": "^4.1.18",
-    "@typescript/native-preview": "^7.0.0-dev.20260103.1",
+    "@typescript/native-preview": "^7.0.0-dev.20260104.1",
     "daisyui": "^5.5.14",
     "drizzle-kit": "^1.0.0-beta.8-dbc3565",
     "drizzle-seed": "^0.3.1",
