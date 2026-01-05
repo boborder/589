@@ -132,5 +132,5 @@ const location = actor({
 });
 
 export const registry = setup({
-  use: { counter, getInfo },
+  use: { counter, getInfo, location },
 });
