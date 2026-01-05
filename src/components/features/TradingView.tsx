@@ -1,17 +1,17 @@
-import { memo, useEffect, useRef } from 'hono/jsx/dom';
-import { atom, useAtom } from 'jotai';
+import { memo, useEffect, useRef } from "hono/jsx/dom";
+import { atom, useAtom } from "jotai";
 
-const symbolAtom = atom('BITSTAMP:XRPUSD');
+const symbolAtom = atom("BITSTAMP:XRPUSD");
 
 export const TradingView = memo(() => {
   const container = useRef<HTMLDivElement>(null);
   const [symbol] = useAtom(symbolAtom);
 
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src =
-      'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
-    script.type = 'text/javascript';
+      "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+    script.type = "text/javascript";
     script.async = true;
     script.innerHTML = `
         {
@@ -47,11 +47,11 @@ export const TradingView = memo(() => {
       <div
         className="tradingview-widget-container"
         ref={container}
-        style={{ height: '100%', width: '100%' }}
+        style={{ height: "100%", width: "100%" }}
       >
         <div
           className="tradingview-widget-container__widget"
-          style={{ height: 'calc(100% - 32px)', width: '100%' }}
+          style={{ height: "calc(100% - 32px)", width: "100%" }}
         />
         <div className="tradingview-widget-copyright">
           <a
@@ -72,10 +72,10 @@ export const CryptoHeatmap = memo(() => {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src =
-      'https://s3.tradingview.com/external-embedding/embed-widget-crypto-coins-heatmap.js';
-    script.type = 'text/javascript';
+      "https://s3.tradingview.com/external-embedding/embed-widget-crypto-coins-heatmap.js";
+    script.type = "text/javascript";
     script.async = true;
     script.innerHTML = `
         {
@@ -119,10 +119,10 @@ export const Ticker = memo(() => {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src =
-      'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
-    script.type = 'text/javascript';
+      "https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js";
+    script.type = "text/javascript";
     script.async = true;
     script.innerHTML = `
         {

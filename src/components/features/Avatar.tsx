@@ -1,12 +1,12 @@
-import { useRef } from 'hono/jsx/dom';
-import { atom, useAtom } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
-import AvatarEditor, { type AvatarEditorRef } from '../../module/avatar-editor';
+import { useRef } from "hono/jsx/dom";
+import { atom, useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
+import AvatarEditor, { type AvatarEditorRef } from "../../module/avatar-editor";
 
 const scaleAtom = atom(1);
 const imageAtom = atomWithStorage(
-  'avatar',
-  'https://gravatar.com/avatar/589?s=256&d=identicon',
+  "avatar",
+  "https://gravatar.com/avatar/589?s=256&d=identicon",
 );
 
 export const Avatar = () => {
@@ -16,7 +16,7 @@ export const Avatar = () => {
   const editorRef = useRef<AvatarEditorRef>(null);
 
   const openModal = () => {
-    const modal = document.getElementById('avatar_modal') as HTMLDialogElement;
+    const modal = document.getElementById("avatar_modal") as HTMLDialogElement;
     modal.showModal();
   };
 

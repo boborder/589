@@ -7,12 +7,12 @@ type CollapseProps = {
 };
 
 export const Collapse = ({
-  title = 'Data',
+  title = "Data",
   content,
-  className = '',
+  className = "",
 }: CollapseProps) => {
   const data =
-    typeof content === 'object' ? JSON.stringify(content, null, 2) : content;
+    typeof content === "object" ? JSON.stringify(content, null, 2) : content;
   return (
     <div className={`mx-auto my-3 ${className}`}>
       <details className="collapse collapse-arrow min-w-72 max-w-72 sm:max-w-108 lg:max-w-130 border border-neutral bg-base-200">

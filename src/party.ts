@@ -1,6 +1,6 @@
-import type { Connection, ConnectionContext } from 'partyserver';
-import { Server } from 'partyserver';
-import type { OutgoingMessage, Position } from './schema/party';
+import type { Connection, ConnectionContext } from "partyserver";
+import { Server } from "partyserver";
+import type { OutgoingMessage, Position } from "./schema/party";
 
 export class WebSocketServer extends Server {
   static options = {
@@ -33,7 +33,7 @@ export class WebSocketServer extends Server {
       try {
         conn.send(
           JSON.stringify({
-            type: 'add-marker',
+            type: "add-marker",
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             position: connection.state?.position,
           }),
@@ -43,7 +43,7 @@ export class WebSocketServer extends Server {
         if (connection.id !== conn.id) {
           connection.send(
             JSON.stringify({
-              type: 'add-marker',
+              type: "add-marker",
               position,
             }),
           );
@@ -59,7 +59,7 @@ export class WebSocketServer extends Server {
   onCloseOrError(connection: Connection) {
     this.broadcast(
       JSON.stringify({
-        type: 'remove-marker',
+        type: "remove-marker",
         id: connection.id,
       } satisfies OutgoingMessage),
       [connection.id],

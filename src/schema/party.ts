@@ -1,4 +1,4 @@
-import * as v from 'valibot';
+import * as v from "valibot";
 
 export const position = v.object({
   lat: v.number(),
@@ -7,7 +7,7 @@ export const position = v.object({
 });
 
 export const outgoingMessage = v.object({
-  type: v.union([v.literal('add-marker'), v.literal('remove-marker')]),
+  type: v.union([v.literal("add-marker"), v.literal("remove-marker")]),
   position: v.optional(position),
   id: v.optional(v.string()),
 });

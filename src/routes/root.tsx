@@ -1,8 +1,8 @@
-import { Hono } from 'hono';
+import { Hono } from "hono";
 
 const app = new Hono<Env>();
 
-export const root = app.get('/', (c) => {
+export const root = app.get("/", (c) => {
   const message = c.env.MESSAGE;
   return c.render(
     <>

@@ -1,7 +1,7 @@
-import { jsxRenderer } from 'hono/jsx-renderer';
-import { Link, Script, ViteClient } from 'vite-ssr-components/hono';
-import { Footer } from './components/Layout/Footer';
-import { Header } from './components/Layout/Header';
+import { jsxRenderer } from "hono/jsx-renderer";
+import { Link, Script, ViteClient } from "vite-ssr-components/hono";
+import { Footer } from "./components/Layout/Footer";
+import { Header } from "./components/Layout/Header";
 
 export const renderer = jsxRenderer(({ children }) => {
   return (

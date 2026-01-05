@@ -1,21 +1,21 @@
-import { createHandler } from '@rivetkit/cloudflare-workers';
-import { Hono } from 'hono';
-import { showRoutes } from 'hono/dev';
-import middleware from './middleware';
-import { registry } from './registry';
-import { renderer } from './renderer';
-import routes from './routes';
-import { root } from './routes/root';
+import { createHandler } from "@rivetkit/cloudflare-workers";
+import { Hono } from "hono";
+import { showRoutes } from "hono/dev";
+import middleware from "./middleware";
+import { registry } from "./registry";
+import { renderer } from "./renderer";
+import routes from "./routes";
+import { root } from "./routes/root";
 
 const app = new Hono<Env>()
   //ミドルウェアを適用
-  .route('/', middleware)
+  .route("/", middleware)
   // SSR レンダラー ミドルウェア
   .use(renderer)
   // api routes
-  .route('/', routes)
+  .route("/", routes)
   // Client ページ
-  .route('/', root);
+  .route("/", root);
 
 if (import.meta.env.DEV) {
   showRoutes(app);
@@ -25,7 +25,7 @@ if (import.meta.env.DEV) {
 export type AppType = typeof app;
 
 // PartyServer のエクスポート
-export { WebSocketServer } from './party';
+export { WebSocketServer } from "./party";
 
 // ここで RivetKit のハンドラーを作成 hono をラップ
 // /rivet エンドポイント が作成される

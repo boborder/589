@@ -1,21 +1,21 @@
-import { hc } from 'hono/client';
-import type { AppType } from '../../index';
-import { Turnstile } from '../../module/turnstile';
+import { hc } from "hono/client";
+import type { AppType } from "../../index";
+import { Turnstile } from "../../module/turnstile";
 
-const rpc = hc<AppType>('/');
+const rpc = hc<AppType>("/");
 
 export const Challenge = () => {
   const verify = (token: string) => {
     const formData = new FormData();
-    formData.append('token', token);
+    formData.append("token", token);
     rpc.api.verify
       .$post({ body: formData })
       .then(async (res) => await res.json())
       .then((data) => {
         if (!data.success) {
-          throw new Error('Invalid token');
+          throw new Error("Invalid token");
         }
-        console.log('token verified');
+        console.log("token verified");
       });
   };
   return (

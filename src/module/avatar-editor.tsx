@@ -1,5 +1,5 @@
-import type { CSSProperties } from 'hono/jsx';
-import { useEffect, useRef, useState } from 'hono/jsx/dom';
+import type { CSSProperties } from "hono/jsx";
+import { useEffect, useRef, useState } from "hono/jsx/dom";
 
 // Utility functions
 const isDataURL = (str: string) => {
@@ -25,7 +25,7 @@ const loadImageFile = (file: File) =>
     reader.onload = (e) => {
       try {
         if (!e?.target?.result) {
-          throw new Error('No image data');
+          throw new Error("No image data");
         }
         const image = loadImageURL(e.target.result as string);
         resolve(image);
@@ -37,29 +37,29 @@ const loadImageFile = (file: File) =>
   });
 
 const isTouchDevice =
-  typeof window !== 'undefined' &&
-  typeof navigator !== 'undefined' &&
-  ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+  typeof window !== "undefined" &&
+  typeof navigator !== "undefined" &&
+  ("ontouchstart" in window || navigator.maxTouchPoints > 0);
 
 const isPassiveSupported = () => {
   let passiveSupported = false;
   try {
-    const options = Object.defineProperty({}, 'passive', {
+    const options = Object.defineProperty({}, "passive", {
       get: () => {
         passiveSupported = true;
       },
     });
 
     const handler = () => {};
-    window.addEventListener('test', handler, options);
-    window.removeEventListener('test', handler, options);
+    window.addEventListener("test", handler, options);
+    window.removeEventListener("test", handler, options);
   } catch {
     passiveSupported = false;
   }
   return passiveSupported;
 };
 
-const isFileAPISupported = typeof File !== 'undefined';
+const isFileAPISupported = typeof File !== "undefined";
 
 // Draws a rounded rectangle on a 2D context.
 const drawRoundedRect = (
@@ -163,7 +163,7 @@ export interface AvatarEditorProps {
   scale?: number;
   rotate?: number;
   borderRadius?: number;
-  crossOrigin?: '' | 'anonymous' | 'use-credentials';
+  crossOrigin?: "" | "anonymous" | "use-credentials";
   onLoadFailure?: () => void;
   onLoadSuccess?: (image: ImageState) => void;
   onImageReady?: () => void;
@@ -232,7 +232,7 @@ const defaultProps = {
   height: 200,
   color: [0, 0, 0, 0.5] as [number, number, number, number?],
   showGrid: false,
-  gridColor: '#666',
+  gridColor: "#666",
   disableBoundaryChecks: false,
   disableHiDPIScaling: false,
   disableCanvasRotation: true,
@@ -242,7 +242,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const { ref, ...restProps } = props;
   const pixelRatio =
-    typeof window !== 'undefined' && window.devicePixelRatio
+    typeof window !== "undefined" && window.devicePixelRatio
       ? window.devicePixelRatio
       : 1;
 
@@ -258,17 +258,17 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
   const getCanvas = (): HTMLCanvasElement => {
     if (!canvasRef.current) {
       throw new Error(
-        'No canvas found, please report this to: https://github.com/mosch/react-avatar-editor/issues',
+        "No canvas found, please report this to: https://github.com/mosch/react-avatar-editor/issues",
       );
     }
     return canvasRef.current;
   };
 
   const getContext = () => {
-    const context = getCanvas().getContext('2d');
+    const context = getCanvas().getContext("2d");
     if (!context) {
       throw new Error(
-        'No context found, please report this to: https://github.com/mosch/react-avatar-editor/issues',
+        "No context found, please report this to: https://github.com/mosch/react-avatar-editor/issues",
       );
     }
     return context;
@@ -311,7 +311,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
 
   const getXScale = () => {
     if (!state.image.width || !state.image.height)
-      throw new Error('Image dimension is unknown.');
+      throw new Error("Image dimension is unknown.");
 
     const canvasAspect = mergedProps.width / mergedProps.height;
     const imageAspect = state.image.width / state.image.height;
@@ -321,7 +321,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
 
   const getYScale = () => {
     if (!state.image.width || !state.image.height)
-      throw new Error('Image dimension is unknown.');
+      throw new Error("Image dimension is unknown.");
 
     const canvasAspect = mergedProps.height / mergedProps.width;
     const imageAspect = state.image.height / state.image.width;
@@ -396,7 +396,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
       } catch {
         mergedProps.onLoadFailure?.();
       }
-    } else if (typeof file === 'string') {
+    } else if (typeof file === "string") {
       try {
         const image = await loadImageURL(file, mergedProps.crossOrigin);
         handleImageReady(image);
@@ -431,7 +431,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
     const [borderX, borderY] = getBorders(border);
 
     if (!image.width || !image.height) {
-      throw new Error('Image dimension is unknown.');
+      throw new Error("Image dimension is unknown.");
     }
 
     const croppingRect = getCroppingRect();
@@ -481,7 +481,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
 
     context.scale(scaleFactor, scaleFactor);
 
-    context.globalCompositeOperation = 'destination-over';
+    context.globalCompositeOperation = "destination-over";
     context.drawImage(
       image.resource,
       position.x,
@@ -505,7 +505,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
       : pixelRatio;
     context.scale(effectivePixelRatio, effectivePixelRatio);
     context.translate(0, 0);
-    context.fillStyle = `rgba(${mergedProps.color.slice(0, 4).join(',')})`;
+    context.fillStyle = `rgba(${mergedProps.color.slice(0, 4).join(",")})`;
 
     let borderRadius = mergedProps.borderRadius;
     const dimensions = getDimensions();
@@ -530,10 +530,10 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
       borderRadius,
     );
     context.rect(width, 0, -width, height);
-    context.fill('evenodd');
+    context.fill("evenodd");
 
     if (mergedProps.borderColor) {
-      context.strokeStyle = `rgba(${mergedProps.borderColor.slice(0, 4).join(',')})`;
+      context.strokeStyle = `rgba(${mergedProps.borderColor.slice(0, 4).join(",")})`;
       context.lineWidth = 1;
       context.beginPath();
       drawRoundedRect(
@@ -584,11 +584,11 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
     e.preventDefault();
 
     const mousePositionX =
-      'targetTouches' in e
+      "targetTouches" in e
         ? e.targetTouches[0].pageX
         : (e as MouseEvent).clientX;
     const mousePositionY =
-      'targetTouches' in e
+      "targetTouches" in e
         ? e.targetTouches[0].pageY
         : (e as MouseEvent).clientY;
 
@@ -645,7 +645,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
 
     if (!image.resource) {
       throw new Error(
-        'No image resource available, please report this to: https://github.com/mosch/react-avatar-editor/issues',
+        "No image resource available, please report this to: https://github.com/mosch/react-avatar-editor/issues",
       );
     }
 
@@ -654,7 +654,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
     cropRect.width *= image.resource.width;
     cropRect.height *= image.resource.height;
 
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
 
     if (isVertical()) {
       canvas.width = cropRect.height;
@@ -664,11 +664,11 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
       canvas.height = cropRect.height;
     }
 
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
 
     if (!context) {
       throw new Error(
-        'No context found, please report this to: https://github.com/mosch/react-avatar-editor/issues',
+        "No context found, please report this to: https://github.com/mosch/react-avatar-editor/issues",
       );
     }
 
@@ -696,7 +696,7 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
   const getImageScaledToCanvas = (): HTMLCanvasElement => {
     const { width, height } = getDimensions();
 
-    const canvas = document.createElement('canvas');
+    const canvas = document.createElement("canvas");
 
     if (isVertical()) {
       canvas.width = height;
@@ -706,9 +706,9 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
       canvas.height = height;
     }
 
-    const context = canvas.getContext('2d');
+    const context = canvas.getContext("2d");
     if (!context) {
-      throw new Error('No context found');
+      throw new Error("No context found");
     }
 
     paintImage(context, state.image, 0, 1);
@@ -725,9 +725,9 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
         getImageScaledToCanvas,
         getCroppingRect,
       };
-      if (typeof ref === 'function') {
+      if (typeof ref === "function") {
         ref(refValue);
-      } else if (ref && 'current' in ref) {
+      } else if (ref && "current" in ref) {
         ref.current = refValue;
       }
     }
@@ -764,23 +764,23 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
     paintImage(context, state.image, mergedProps.border);
 
     const options = isPassiveSupported() ? { passive: false } : false;
-    document.addEventListener('mousemove', handleMouseMove, options);
-    document.addEventListener('mouseup', handleMouseUp, options);
+    document.addEventListener("mousemove", handleMouseMove, options);
+    document.addEventListener("mouseup", handleMouseUp, options);
 
     if (isTouchDevice) {
-      document.addEventListener('touchmove', handleMouseMove, options);
-      document.addEventListener('touchend', handleMouseUp, options);
+      document.addEventListener("touchmove", handleMouseMove, options);
+      document.addEventListener("touchend", handleMouseUp, options);
     }
 
     mergedProps.onImageChange?.();
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove, false);
-      document.removeEventListener('mouseup', handleMouseUp, false);
+      document.removeEventListener("mousemove", handleMouseMove, false);
+      document.removeEventListener("mouseup", handleMouseUp, false);
 
       if (isTouchDevice) {
-        document.removeEventListener('touchmove', handleMouseMove, false);
-        document.removeEventListener('touchend', handleMouseUp, false);
+        document.removeEventListener("touchmove", handleMouseMove, false);
+        document.removeEventListener("touchend", handleMouseUp, false);
       }
     };
   }, [
@@ -800,8 +800,8 @@ export const AvatarEditor = (props: AvatarEditorProps) => {
   const defaultStyle: CSSProperties = {
     width: dimensions.canvas.width,
     height: dimensions.canvas.height,
-    cursor: state.drag ? 'grabbing' : 'grab',
-    touchAction: 'none',
+    cursor: state.drag ? "grabbing" : "grab",
+    touchAction: "none",
   };
 
   return (

@@ -1,5 +1,5 @@
-import type { JSX } from 'hono/jsx';
-import { useEffect, useRef } from 'hono/jsx/dom';
+import type { JSX } from "hono/jsx";
+import { useEffect, useRef } from "hono/jsx/dom";
 
 declare global {
   interface Window {
@@ -19,14 +19,14 @@ declare global {
 interface TurnstileOptions {
   sitekey: string;
   callback?: (token: string) => void;
-  'error-callback'?: () => void;
-  'expired-callback'?: () => void;
-  theme?: 'light' | 'dark' | 'auto';
-  size?: 'normal' | 'compact';
+  "error-callback"?: () => void;
+  "expired-callback"?: () => void;
+  theme?: "light" | "dark" | "auto";
+  size?: "normal" | "compact";
   tabindex?: number;
   action?: string;
   cData?: string;
-  appearance?: 'always' | 'execute' | 'interaction-only';
+  appearance?: "always" | "execute" | "interaction-only";
 }
 
 export interface TurnstileProps {
@@ -34,11 +34,11 @@ export interface TurnstileProps {
   onSuccess?: (token: string) => void;
   onError?: () => void;
   onExpire?: () => void;
-  theme?: 'light' | 'dark' | 'auto';
-  size?: 'normal' | 'compact';
+  theme?: "light" | "dark" | "auto";
+  size?: "normal" | "compact";
   action?: string;
   cData?: string;
-  appearance?: 'always' | 'execute' | 'interaction-only';
+  appearance?: "always" | "execute" | "interaction-only";
   className?: string;
   style?: JSX.CSSProperties;
 }
@@ -50,7 +50,7 @@ export interface TurnstileInstance {
 }
 
 const TURNSTILE_SCRIPT_URL =
-  'https://challenges.cloudflare.com/turnstile/v0/api.js';
+  "https://challenges.cloudflare.com/turnstile/v0/api.js";
 
 let scriptLoaded = false;
 let scriptLoading = false;
@@ -70,7 +70,7 @@ const loadTurnstileScript = (): Promise<void> => {
 
     scriptLoading = true;
 
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = TURNSTILE_SCRIPT_URL;
     script.async = true;
     script.defer = true;
@@ -87,7 +87,7 @@ const loadTurnstileScript = (): Promise<void> => {
 
     script.onerror = () => {
       scriptLoading = false;
-      reject(new Error('Failed to load Turnstile script'));
+      reject(new Error("Failed to load Turnstile script"));
     };
 
     document.head.appendChild(script);
@@ -116,8 +116,8 @@ export const Turnstile = (props: TurnstileProps) => {
         const options: TurnstileOptions = {
           sitekey: props.siteKey,
           callback: props.onSuccess,
-          'error-callback': props.onError,
-          'expired-callback': props.onExpire,
+          "error-callback": props.onError,
+          "expired-callback": props.onExpire,
           theme: props.theme,
           size: props.size,
           action: props.action,
@@ -130,7 +130,7 @@ export const Turnstile = (props: TurnstileProps) => {
           options,
         );
       } catch (error) {
-        console.error('Failed to initialize Turnstile:', error);
+        console.error("Failed to initialize Turnstile:", error);
         props.onError?.();
       }
     };
@@ -161,7 +161,7 @@ export const useTurnstile = (ref: {
       // Try to find the widget ID from the container
       const widgetElement = ref.current.querySelector('[id^="cf-chl-widget-"]');
       if (widgetElement) {
-        widgetIdRef.current = widgetElement.id.replace('cf-chl-widget-', '');
+        widgetIdRef.current = widgetElement.id.replace("cf-chl-widget-", "");
       }
     }
   }, [ref.current]);

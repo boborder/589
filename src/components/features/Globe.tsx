@@ -1,7 +1,7 @@
-import createGlobe from 'cobe';
-import { useEffect, useRef, useState } from 'hono/jsx/dom';
-import { usePartySocket } from 'partysocket/react';
-import type { OutgoingMessage } from '../../schema/party';
+import createGlobe from "cobe";
+import { useEffect, useRef, useState } from "hono/jsx/dom";
+import { usePartySocket } from "partysocket/react";
+import type { OutgoingMessage } from "../../schema/party";
 
 export const Globe = () => {
   // A reference to the canvas element where we'll render the globe
@@ -18,11 +18,11 @@ export const Globe = () => {
 
   // Connect to the PartyServer server
   const socket = usePartySocket({
-    room: 'default',
-    party: 'websocketserver',
+    room: "default",
+    party: "websocketserver",
     onMessage(evt) {
       const message = JSON.parse(evt.data as string) as OutgoingMessage;
-      if (message.type === 'add-marker') {
+      if (message.type === "add-marker") {
         // Add the marker to our map
         positions.current?.set(message.position!.id, {
           location: [message.position!.lat, message.position!.lng],
@@ -82,7 +82,7 @@ export const Globe = () => {
       <p>Where's everyone at?</p>
       {counter !== 0 ? (
         <p>
-          <b>{counter}</b> {counter === 1 ? 'person' : 'people'} connected.
+          <b>{counter}</b> {counter === 1 ? "person" : "people"} connected.
         </p>
       ) : (
         <p>&nbsp;</p>
