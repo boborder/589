@@ -43,6 +43,12 @@ export const getInfo = actor({
   onSleep: (_c) => {
     console.log("onSleep");
   },
+  // onConnect: (c) => {
+  //   const url = "https://xrpl.ws";
+  //   c.schedule.after(60000, "getServerInfo", url);
+  //   c.schedule.after(30000, "getPrice", url);
+  //   c.schedule.after(3333, "getFee", url);
+  // },
   actions: {
     // XRP/RLUSD 30秒ごとに取得
     getPrice: async (c, url: string) => {
@@ -63,7 +69,7 @@ export const getInfo = actor({
         }),
       }).then((res) => res.json())) as BookOffersResponse;
       c.state.price = res;
-      // c.broadcast('newPrice', c.state.price);
+      c.broadcast("newPrice", c.state.price);
       c.schedule.after(30000, "getPrice", url);
       return c.state.price;
     },
@@ -76,8 +82,7 @@ export const getInfo = actor({
         }),
       }).then((res) => res.json())) as ServerInfoResponse;
       c.state.serverInfo = res;
-      // ブロードキャストの意味ない？
-      // c.broadcast('newTime', c.state.serverInfo);
+      c.broadcast("newServerInfo", c.state.serverInfo);
       c.schedule.after(60000, "getServerInfo", url);
       return c.state.serverInfo;
     },
@@ -90,16 +95,15 @@ export const getInfo = actor({
         }),
       }).then((res) => res.json())) as FeeResponse;
       c.state.fee = res;
-      // ブロードキャストの意味ない？
-      // c.broadcast('newLedgerIndex', c.state.fee);
+      c.broadcast("newFee", c.state.fee);
       c.schedule.after(3333, "getFee", url);
       return c.state.fee;
     },
     getCurrent: async (c) => {
       return {
         price: c.state.price,
-        time: c.state.serverInfo,
-        ledgerIndex: c.state.fee,
+        serverInfo: c.state.serverInfo,
+        fee: c.state.fee,
       };
     },
   },
@@ -114,19 +118,26 @@ const location = actor({
   state: { location: { lat: 0, lng: 0, Region: "" }, count: 0 },
   // request から cf へアクセスできる
   onRequest: (c, request) => {
-    console.log(request.cf?.latitude, request.cf?.longitude, request.cf?.region);
+    console.log(
+      request.cf?.latitude,
+      request.cf?.longitude,
+      request.cf?.region,
+    );
     c.state.location = {
       lat: parseFloat(request.cf?.latitude as string),
       lng: parseFloat(request.cf?.longitude as string),
       Region: request.cf?.region as string,
     };
     c.state.count++;
-    return new Response(JSON.stringify({
-      location: c.state.location,
-      count: c.state.count
-    }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({
+        location: c.state.location,
+        count: c.state.count,
+      }),
+      {
+        headers: { "Content-Type": "application/json" },
+      },
+    );
   },
   onDisconnect: (c) => {
     // ユーザーが離れたら位置情報を削除

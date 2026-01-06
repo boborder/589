@@ -1,6 +1,7 @@
-import { createClient } from "@rivetkit/react";
+import { createClient, createRivetKit } from "@rivetkit/react";
 import { atom, useAtom } from "jotai";
 import { atomWithQuery } from "jotai-tanstack-query";
+import type { BookOffersResponse, FeeResponse, ServerInfoResponse } from "xrpl";
 import type { registry } from "../../registry";
 
 // RivetKit のエンドポイント 本番環境 or 開発環境
@@ -20,56 +21,69 @@ const getInfoQuery = atomWithQuery((get) => ({
   queryFn: async () => {
     // /rivet/getInfo/my-schedule へリクエスト
     const client = get(clientAtom).getInfo.getOrCreate("my-schedule");
+    // const current = await client.getCurrent();
     // XRP の手数料を取得
-    await client.getFee(get(endpointAtom)[0]);
+    const fee = await client.getFee(get(endpointAtom)[0]);
     // XRP/RLUSD の価格を取得
-    await client.getPrice(get(endpointAtom)[0]);
+    const price = await client.getPrice(get(endpointAtom)[0]);
     // XRP のサーバー時間を取得
-    await client.getServerInfo(get(endpointAtom)[0]);
-    return get(endpointAtom)[0];
+    const serverInfo = await client.getServerInfo(get(endpointAtom)[0]);
+    return {
+      fee: fee.result.ledger_current_index,
+      price: Number(price.result.offers[0].quality) * 1000000,
+      serverInfo: serverInfo.result.info.time,
+      endpoint: get(endpointAtom)[0],
+    };
   },
   enabled: !!get(clientAtom).getInfo,
 }));
 
-// RivetKit state の current を取得するクエリ
-const currentQuery = atomWithQuery((get) => ({
-  // /rivet/getInfo/my-schedule へリクエスト
-  queryKey: ["current", get(clientAtom)],
-  queryFn: async () => {
-    // /rivet/getInfo/my-schedule へリクエスト
-    const client = get(clientAtom).getInfo.getOrCreate("my-schedule");
-    return client.getCurrent();
-  },
-  refetchInterval: 3456,
-  enabled: !!get(clientAtom).getInfo,
-}));
+const feeAtom = atom(0);
+const priceAtom = atom(0.0);
+const serverInfoAtom = atom("");
+
+const { useActor } = createRivetKit<typeof registry>({
+  endpoint,
+});
 
 export const GetXRP = () => {
   const [{ data: getInfo }] = useAtom(getInfoQuery);
-  const [{ data: current }] = useAtom(currentQuery);
+  const [fee, setFee] = useAtom(feeAtom);
+  const [price, setPrice] = useAtom(priceAtom);
+  const [serverInfo, setServerInfo] = useAtom(serverInfoAtom);
+
+  const client = useActor({
+    name: "getInfo",
+    key: ["my-schedule"],
+  });
+
+  client.useEvent("newFee", async (fee: FeeResponse) => {
+    setFee(fee.result.ledger_current_index);
+  });
+  client.useEvent("newPrice", async (price: BookOffersResponse) => {
+    setPrice(Number(price.result.offers[0].quality) * 1000000);
+  });
+  client.useEvent("newServerInfo", async (serverInfo: ServerInfoResponse) => {
+    setServerInfo(serverInfo.result.info.time);
+  });
 
   return (
     <div className="stats stats-vertical md:stats-horizontal">
       <div className="stat">
         <div className="stat-title">Time</div>
         <div className="stat-value text-xs  font-mono">
-          {current?.time.result.info.time}
+          {serverInfo ?? getInfo?.serverInfo}
         </div>
-        <div className="stat-desc">{getInfo}</div>
+        <div className="stat-desc">{getInfo?.endpoint}</div>
       </div>
       <div className="stat">
         <div className="stat-title">Ledger Index</div>
-        <div className="stat-value font-mono">
-          {current?.ledgerIndex.result.ledger_current_index}
-        </div>
+        <div className="stat-value font-mono">{fee ?? getInfo?.fee}</div>
       </div>
       <div className="stat">
         <div className="stat-title">XRP/RLUSD</div>
         <div className="stat-value font-mono">
-          $
-          {(Number(current?.price.result.offers[0].quality) * 1000000).toFixed(
-            4,
-          )}
+          ${(price ?? getInfo?.price)!.toFixed(4)}
         </div>
       </div>
     </div>

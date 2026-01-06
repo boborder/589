@@ -35,17 +35,18 @@
    ```
 
 3. 型定義の生成
-   Cloudflare Workers の設定（wrangler.jsonc）に基づいた型定義を生成します。
 
    ```:sh
+   # wrangler.json の vars や .env から型定義ファイルを生成
    bun run cf:typegen
    ```
 
 4. データベースの作成
 
    ```:sh
+   # schema から drizzle/migration 配下にsqlファイルを生成
    bun run db:generate
-
+   # drizzle/migration から db へ 反映
    bun run db:migrate
    ```
 
@@ -61,6 +62,7 @@
 Cloudflare Workers へのデプロイは以下のコマンドで行います。
 
 ```:sh
+# app.{ACCOUNT}.workers.dev でアクセスできる
 bun run deploy
 # 環境変数もデプロイ
 bun run cf:secret
@@ -68,6 +70,7 @@ bun run cf:secret
 
 ## 参考文献
 
+- [WebStandard](https://developer.mozilla.org/en-US/)
 - [Hono](https://hono.dev/docs/)
 - [Durable Objects](https://developers.cloudflare.com/durable-objects/)
 - [Rivetkit](https://www.rivet.dev/docs/)
