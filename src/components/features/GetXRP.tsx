@@ -19,8 +19,8 @@ const endpointAtom = atom(["https://xrpl.ws", "wss://xrpl.ws"]);
 const getInfoQuery = atomWithQuery((get) => ({
   queryKey: ["getInfo", get(clientAtom), get(endpointAtom)],
   queryFn: async () => {
-    // /rivet/getInfo/my-schedule へリクエスト
-    const client = get(clientAtom).getInfo.getOrCreate("my-schedule");
+    // /rivet/getInfo/default へリクエスト
+    const client = get(clientAtom).getInfo.getOrCreate("default");
     // const current = await client.getCurrent();
     // XRP の手数料を取得
     const fee = await client.getFee(get(endpointAtom)[0]);
@@ -54,16 +54,16 @@ export const GetXRP = () => {
 
   const client = useActor({
     name: "getInfo",
-    key: ["my-schedule"],
+    key: ["default"],
   });
 
-  client.useEvent("newFee", async (fee: FeeResponse) => {
+  client.useEvent("newFee", (fee: FeeResponse) => {
     setFee(fee.result.ledger_current_index);
   });
-  client.useEvent("newPrice", async (price: BookOffersResponse) => {
+  client.useEvent("newPrice", (price: BookOffersResponse) => {
     setPrice(Number(price.result.offers[0].quality) * 1000000);
   });
-  client.useEvent("newServerInfo", async (serverInfo: ServerInfoResponse) => {
+  client.useEvent("newServerInfo", (serverInfo: ServerInfoResponse) => {
     setServerInfo(serverInfo.result.info.time);
   });
 

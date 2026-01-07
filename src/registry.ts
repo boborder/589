@@ -43,8 +43,8 @@ export const getInfo = actor({
   onSleep: (_c) => {
     console.log("onSleep");
   },
-  onWake: (_c) => {
-    console.log("onWake");
+  onConnect: (c) => {
+    console.log(c.conns.size);
   },
   // onCreate: (c) => {
   //   const url = "https://xrpl.ws";
@@ -73,7 +73,7 @@ export const getInfo = actor({
       }).then((res) => res.json())) as BookOffersResponse;
       c.state.price = res;
       c.broadcast("newPrice", c.state.price);
-      c.schedule.after(30000, "getPrice", url);
+      await c.schedule.after(30000, "getPrice", url);
       return c.state.price;
     },
     // サーバー時間 60秒ごとに取得
@@ -86,7 +86,7 @@ export const getInfo = actor({
       }).then((res) => res.json())) as ServerInfoResponse;
       c.state.serverInfo = res;
       c.broadcast("newServerInfo", c.state.serverInfo);
-      c.schedule.after(60000, "getServerInfo", url);
+      await c.schedule.after(60000, "getServerInfo", url);
       return c.state.serverInfo;
     },
     // 手数料 3秒ごとに取得
@@ -99,16 +99,16 @@ export const getInfo = actor({
       }).then((res) => res.json())) as FeeResponse;
       c.state.fee = res;
       c.broadcast("newFee", c.state.fee);
-      c.schedule.after(3333, "getFee", url);
+      await c.schedule.after(3333, "getFee", url);
       return c.state.fee;
     },
-    // getCurrent: async (c) => {
-    //   return {
-    //     price: c.state.price,
-    //     serverInfo: c.state.serverInfo,
-    //     fee: c.state.fee,
-    //   };
-    // },
+    getCurrent: async (c) => {
+      return {
+        price: c.state.price,
+        serverInfo: c.state.serverInfo,
+        fee: c.state.fee,
+      };
+    },
   },
 });
 
