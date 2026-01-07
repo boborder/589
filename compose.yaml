@@ -5,8 +5,7 @@ services:
       context: .
     ports:
       - "3000:3000"
-      - "4983:4983"
-    # command: ["run", "db:studio"]
+    command: ["run", "preview"]
     env_file:
       - .env
     depends_on:
@@ -27,6 +26,11 @@ services:
     command: tunnel --url http://app:3000
     # command: tunnel --url http://app:4983
     restart: unless-stopped
+
+  rivet:
+    image: rivetkit/engine
+    ports:
+      - "6420:6420"
 
 volumes:
   pg_data:

@@ -21,7 +21,7 @@ export const renderer = jsxRenderer(({ children }) => {
       </head>
       <body>
         <Header />
-        <main className="container mx-auto text-center px-0.5">
+        <main className="mx-auto text-center">
           <div className="min-h-[72vh] flex flex-col items-center justify-center">
             {/* <div className="cf-turnstile" data-sitekey="0x4AAAAAAAei5dXpFGHt6PLt" /> */}
             {children}

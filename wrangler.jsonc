@@ -8,7 +8,7 @@
   "placement": { "mode": "smart" },
   "observability": { "enabled": true },
   "vars": {
-    "MESSAGE": "The best insentive is no incentive.",
+    "MESSAGE": "The best incentive is no incentive.",
     "API_URL": "https://app.589.workers.dev"
   },
   "durable_objects": {

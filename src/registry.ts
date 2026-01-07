@@ -43,7 +43,10 @@ export const getInfo = actor({
   onSleep: (_c) => {
     console.log("onSleep");
   },
-  // onConnect: (c) => {
+  onWake: (_c) => {
+    console.log("onWake");
+  },
+  // onCreate: (c) => {
   //   const url = "https://xrpl.ws";
   //   c.schedule.after(60000, "getServerInfo", url);
   //   c.schedule.after(30000, "getPrice", url);
@@ -99,13 +102,13 @@ export const getInfo = actor({
       c.schedule.after(3333, "getFee", url);
       return c.state.fee;
     },
-    getCurrent: async (c) => {
-      return {
-        price: c.state.price,
-        serverInfo: c.state.serverInfo,
-        fee: c.state.fee,
-      };
-    },
+    // getCurrent: async (c) => {
+    //   return {
+    //     price: c.state.price,
+    //     serverInfo: c.state.serverInfo,
+    //     fee: c.state.fee,
+    //   };
+    // },
   },
 });
 
