@@ -57,13 +57,13 @@ export const GetXRP = () => {
     key: ["default"],
   });
 
-  client.useEvent("newFee", (fee: FeeResponse) => {
+  client.useEvent("newFee", async (fee: FeeResponse) => {
     setFee(fee.result.ledger_current_index);
   });
-  client.useEvent("newPrice", (price: BookOffersResponse) => {
+  client.useEvent("newPrice", async (price: BookOffersResponse) => {
     setPrice(Number(price.result.offers[0].quality) * 1000000);
   });
-  client.useEvent("newServerInfo", (serverInfo: ServerInfoResponse) => {
+  client.useEvent("newServerInfo", async (serverInfo: ServerInfoResponse) => {
     setServerInfo(serverInfo.result.info.time);
   });
 
